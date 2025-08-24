@@ -4,3 +4,4 @@ steps
 dist
 logs
 *info
+/src/generated/prisma
