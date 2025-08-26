@@ -11,5 +11,10 @@ export default z
     LOG_LEVEL: z
       .enum(['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'])
       .default('info'),
+
+    MT_HOST: z.string(),
+    MT_PORT: z.coerce.number(),
+    MT_USER: z.string(),
+    MT_PASS: z.string(),
   })
   .parse(process.env);
