@@ -6,7 +6,8 @@ export const loginSchema = z.object({
       .string()
       .min(3, 'Name cannot be less than 3 characters')
       .max(30, 'Name cannot be more than 30 characters')
-      .optional(),
+      .optional()
+      .default('user'),
     email: z.email(),
   }),
 });
