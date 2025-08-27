@@ -11,3 +11,8 @@ export const login: RequestHandler = async (req, res, next) => {
   const result = await authService.login(req.body);
   sendResponse(res, result);
 };
+
+export const refreshToken: RequestHandler = async (req, res, next) => {
+  const result = await authService.refreshToken(req.body);
+  sendResponse(res, result);
+};
