@@ -18,8 +18,6 @@ const validate =
     }
 
     if (result.data.body) req.body = result.data.body;
-
-    console.log('ayhaga validate');
     next();
   };
 

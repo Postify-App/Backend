@@ -1,0 +1,105 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title= subject
+    style.
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+      .container {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .logo {
+        font-size: 28px;
+        font-weight: bold;
+        color: #9412ED;
+        margin-bottom: 10px;
+      }
+      .otp-code {
+        background-color: #f8fafc;
+        border: 2px dashed #9412ED;
+        padding: 20px;
+        text-align: center;
+        margin: 20px 0;
+        border-radius: 8px;
+      }
+      .otp-number {
+        font-size: 32px;
+        font-weight: bold;
+        color: #9412ED;
+        letter-spacing: 4px;
+        font-family: monospace;
+      }
+      .button {
+        display: inline-block;
+        background: linear-gradient(135deg, #9412ED 0%, #6BED12 100%);
+        color: white;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 6px;
+        margin: 20px 0;
+        font-weight: bold;
+        transition: transform 0.2s ease;
+      }
+      .button:hover {
+        transform: translateY(-2px);
+      }
+      .footer {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+        font-size: 14px;
+        color: #6b7280;
+        text-align: center;
+      }
+      .warning {
+        background-color: #fef3c7;
+        border-left: 4px solid #6BED12;
+        padding: 12px;
+        margin: 20px 0;
+        border-radius: 4px;
+      }
+      .accent-text {
+        color: #9412ED;
+        font-weight: bold;
+      }
+
+  body
+    .container
+      .header
+        .logo Postify
+        h1 Email Verification Required
+      
+      p Hello #{firstName},
+      
+      p Welcome to <span class="accent-text">Postify</span>! To complete your account setup, please verify your email address using the One-Time Passcode below:
+      
+      .otp-code
+        p Your verification code is:
+        .otp-number= OTP
+        p This code will expire in 5 minutes.
+      
+      .warning
+        p ⚠️ <strong>Important:</strong> Never share this code with anyone. Our team will never ask for your verification code.
+      
+      p If you didn't create an account with <span class="accent-text">Postify</span>, please ignore this email.
+      
+      .footer
+        p This email was sent to you because someone tried to create an account with your email address.
+        p If you have any questions, please contact our support team.
+        p © 2025 <span class="accent-text">Postify</span>. All rights reserved.

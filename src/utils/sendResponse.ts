@@ -7,6 +7,8 @@ const sendResponse = (res: Response, result: APIResponse) => {
     status: result.status,
     message: result.message,
     data: result.data,
+    accessToken: result.accessToken,
+    refreshToken: result.refreshToken,
   });
 };
 
