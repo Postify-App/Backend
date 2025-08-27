@@ -1,7 +1,7 @@
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
 
 import env from '../config/env';
-import { RefreshTokenPayload } from '../types/auth.types';
+import { AccessTokenPayload, RefreshTokenPayload } from '../types/auth.types';
 
 const generateToken = (payload: object, secret: string, expiresIn: string) =>
   sign(payload, secret, {
@@ -18,7 +18,7 @@ const verifyToken = <T>(token: string, secret: string): T & JwtPayload =>
   verify(token, secret) as T & JwtPayload;
 
 export const verifyAccessToken = (token: string) =>
-  verifyToken(token, env.ACCESS_TOKEN_SECRET);
+  verifyToken<AccessTokenPayload>(token, env.ACCESS_TOKEN_SECRET);
 
 export const verifyRefreshToken = (token: string) =>
   verifyToken<RefreshTokenPayload>(token, env.REFRESH_TOKEN_SECRET);
