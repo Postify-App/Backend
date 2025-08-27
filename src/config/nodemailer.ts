@@ -1,7 +1,8 @@
 import nodemailer from 'nodemailer';
 import env from './env';
 
-export const newTransport = () => {
+const createTransporter = () => {
+  // Sending Emails in Production needs to be configured
   return nodemailer.createTransport({
     host: env.MT_HOST,
     port: env.MT_PORT,
@@ -11,3 +12,5 @@ export const newTransport = () => {
     },
   });
 };
+
+export const transporter = createTransporter();

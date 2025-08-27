@@ -1,6 +1,8 @@
 export type APIResponse = {
   status: string;
   statusCode: number;
-  message?: string;
   data?: object;
+  message?: string;
+  accessToken?: string;
+  refreshToken?: string;
 };
