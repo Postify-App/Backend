@@ -11,11 +11,13 @@ const authSharedSchema = z.object({
 });
 
 export const loginSchema = z.object({
-  body: authSharedSchema,
+  body: authSharedSchema.strict(),
 });
 
 export const OTPSchema = z.object({
-  body: authSharedSchema.extend({
-    OTP: z.string().length(6, 'OTP must be of length 6'),
-  }),
+  body: authSharedSchema
+    .extend({
+      OTP: z.string().length(6, 'OTP must be of length 6'),
+    })
+    .strict(),
 });
