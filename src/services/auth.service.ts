@@ -56,6 +56,9 @@ class AuthService {
     if (OTP !== body.OTP)
       throw new APIError('OTP not found or expired', statusCodes.Unauthorized);
 
+    // OTP Ok? Delete it from Redis (for more secure reasons)
+    await redisService.DEL(body.email);
+
     // Check if user existed or not
     let user = await prisma.user.findUnique({
       where: {

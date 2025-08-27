@@ -8,6 +8,10 @@ class RedisService {
   GET = async (key: string) => {
     return await redis.GET(key);
   };
+
+  DEL = async (key: string) => {
+    await redis.DEL(key);
+  };
 }
 
 export default new RedisService();
