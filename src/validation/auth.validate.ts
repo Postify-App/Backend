@@ -21,3 +21,11 @@ export const OTPSchema = z.object({
     })
     .strict(),
 });
+
+export const refreshTokenSchema = z.object({
+  body: z
+    .object({
+      refreshToken: z.string(),
+    })
+    .strict(),
+});

@@ -31,7 +31,7 @@ const sendEmail = async (
       }),
     });
 
-    logger.info(`Email sent successfully.\nid: ${info.messageId}.\n${email}.`);
+    logger.info(`Email sent successfully.\nid: ${info.messageId}\n${email}`);
   } catch (err) {
     logger.error(`Failed to send email to ${email}: ${err}`);
   }
