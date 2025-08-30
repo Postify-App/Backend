@@ -24,6 +24,11 @@ const envConfig = z
     MT_USER: z.string(),
     MT_PASS: z.string(),
 
+    SG_HOST: z.string(),
+    SG_PORT: z.coerce.number(),
+    SG_USER: z.string(),
+    SG_PASS: z.string(),
+
     ACCESS_TOKEN_SECRET: z.string(),
     ACCESS_TOKEN_EXPIRES_IN: z.string(),
     REFRESH_TOKEN_SECRET: z.string(),
@@ -31,12 +36,26 @@ const envConfig = z
   })
   .parse(process.env);
 
-const BASE_URL =
-  envConfig.NODE_ENV === 'development'
-    ? `http://localhost:${envConfig.PORT}/api/v1`
-    : 'sample.production.url';
+let BASE_URL, SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS;
+if (envConfig.NODE_ENV === 'development') {
+  BASE_URL = `http://localhost:${envConfig.PORT}/api/v1`;
+  SMTP_HOST = envConfig.MT_HOST;
+  SMTP_PORT = envConfig.MT_PORT;
+  SMTP_USER = envConfig.MT_USER;
+  SMTP_PASS = envConfig.MT_PASS;
+} else {
+  BASE_URL = `http://localhost:${envConfig.PORT}/api/v1`;
+  SMTP_HOST = envConfig.SG_HOST;
+  SMTP_PORT = envConfig.SG_PORT;
+  SMTP_USER = envConfig.SG_USER;
+  SMTP_PASS = envConfig.SG_PASS;
+}
 
 export default {
   ...envConfig,
   BASE_URL,
+  SMTP_HOST,
+  SMTP_PORT,
+  SMTP_USER,
+  SMTP_PASS,
 };
