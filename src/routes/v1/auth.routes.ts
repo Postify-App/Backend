@@ -11,11 +11,18 @@ import {
   OTPSchema,
   refreshTokenSchema,
 } from '../../validation/auth.validate';
+import rateLimit from 'express-rate-limit';
 
 const router = Router();
 
+const strictLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  limit: 5,
+  message: 'You reached your limit, Please try again later.',
+});
+
 router.post('/', validate(loginSchema), sendOTP);
-router.post('/login', validate(OTPSchema), login);
+router.post('/login', validate(OTPSchema), strictLimiter, login);
 router.post('/refresh-token', validate(refreshTokenSchema), refreshToken);
 
 export const authRoutes = router;
