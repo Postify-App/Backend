@@ -5,4 +5,5 @@ export type APIResponse = {
   message?: string;
   accessToken?: string;
   refreshToken?: string;
+  timestamp?: string;
 };

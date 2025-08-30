@@ -9,6 +9,7 @@ const sendResponse = (res: Response, result: APIResponse) => {
     data: result.data,
     accessToken: result.accessToken,
     refreshToken: result.refreshToken,
+    timestamp: result.timestamp,
   });
 };
 

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --build && cp -r src/templates dist/templates && npx prisma generate",
+    "build": "tsc --build && cp -r src/templates dist/templates",
     "start": "node ./dist/server.js",
     "dev": "nodemon ./src/server.ts",
     "prod": "set NODE_ENV=production&& node ./dist/server.js"

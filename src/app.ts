@@ -5,11 +5,12 @@ import express from 'express';
 import env from './config/env';
 import { apiRoutes } from './routes';
 import notFound from './middlewares/notFound';
+import healthCheck from './middlewares/healthCheck';
 import globalErrorHandler from './middlewares/globalErrorHandler';
 
 const app = express();
 
-// CORS configuration for Azure
+// CORS configuration
 app.use(
   cors({
     origin:
@@ -24,12 +25,9 @@ app.use(express.json());
 
 app.use(morgan(env.NODE_ENV === 'development' ? 'dev' : 'combined'));
 
-// Health check endpoint for Azure
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
-});
-
+// Health check endpoint
 app.use('/api', apiRoutes);
+app.get('/health', healthCheck);
 
 app.all(/.*/, notFound);
 
