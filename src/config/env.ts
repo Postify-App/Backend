@@ -12,6 +12,11 @@ const envConfig = z
       .enum(['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'])
       .default('info'),
 
+    REDIS_USERNAME: z.string(),
+    REDIS_PASSWORD: z.string(),
+    REDIS_HOST: z.string(),
+    REDIS_PORT: z.coerce.number(),
+
     EMAIL_FROM: z.string(),
 
     MT_HOST: z.string(),
