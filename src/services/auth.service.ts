@@ -35,9 +35,7 @@ class AuthService {
     await this.setOTP(body.email, OTP);
 
     // Send the OTP email verification
-    console.log('before');
     await sendVerificationEmail(body.name, body.email, OTP);
-    console.log('after');
 
     const res: APIResponse = {
       status: 'success',
