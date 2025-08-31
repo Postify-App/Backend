@@ -9,7 +9,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
   const result: APIResponse = {
     status: 'OK',
     statusCode: statusCodes.OK,
-    message: `API is healthy and stable (I think?), PORT: ${env.NODE_ENV}`,
+    message: `API is healthy and stable (I think?). ENV: ${env.NODE_ENV}`,
     timestamp: new Date().toISOString(),
   };
 
