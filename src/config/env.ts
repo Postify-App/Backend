@@ -12,6 +12,8 @@ const envConfig = z
       .enum(['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'])
       .default('info'),
 
+    PROD_BASE_URL: z.string(),
+
     REDIS_USERNAME: z.string(),
     REDIS_PASSWORD: z.string(),
     REDIS_HOST: z.string(),
@@ -33,6 +35,9 @@ const envConfig = z
     ACCESS_TOKEN_EXPIRES_IN: z.string(),
     REFRESH_TOKEN_SECRET: z.string(),
     REFRESH_TOKEN_EXPIRES_IN: z.string(),
+
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
   })
   .parse(process.env);
 
@@ -44,7 +49,7 @@ if (envConfig.NODE_ENV === 'development') {
   SMTP_USER = envConfig.MT_USER;
   SMTP_PASS = envConfig.MT_PASS;
 } else {
-  BASE_URL = `http://localhost:${envConfig.PORT}/api/v1`;
+  BASE_URL = `${envConfig.PROD_BASE_URL}/api/v1`;
   SMTP_HOST = envConfig.SG_HOST;
   SMTP_PORT = envConfig.SG_PORT;
   SMTP_USER = envConfig.SG_USER;
@@ -58,4 +63,5 @@ export default {
   SMTP_PORT,
   SMTP_USER,
   SMTP_PASS,
+  GOOGLE_CALLBACK_URL: `${BASE_URL}/auth/callback/google`,
 };
