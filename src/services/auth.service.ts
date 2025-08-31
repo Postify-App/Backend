@@ -10,6 +10,7 @@ import {
   generateRefreshToken,
   verifyRefreshToken,
 } from '../utils/token';
+import { User } from '@prisma/client';
 
 class AuthService {
   private OTPDuration = 5;
@@ -113,6 +114,20 @@ class AuthService {
       status: 'success',
       statusCode: statusCodes.OK,
       accessToken: generateAccessToken(user),
+    };
+
+    return result;
+  };
+
+  handleGoogleCallback = async (user: User) => {
+    const result: APIResponse = {
+      status: 'success',
+      statusCode: statusCodes.OK,
+      data: user,
+      accessToken: generateAccessToken(user),
+      refreshToken: generateRefreshToken({
+        id: user.id,
+      }),
     };
 
     return result;
