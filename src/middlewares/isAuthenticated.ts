@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 
-import prisma from '../config/prisma';
 import APIError from '../utils/APIError';
 import statusCodes from '../utils/statusCodes';
 import { verifyAccessToken } from '../utils/token';
+import userRepository from '../repositories/user.repository';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   if (
@@ -29,11 +29,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       statusCodes.Unauthorized
     );
 
-  const user = await prisma.user.findUnique({
-    where: {
-      id: payload.id,
-    },
-  });
+  const user = await userRepository.getUserById(payload.id);
 
   if (!user)
     throw new APIError(
