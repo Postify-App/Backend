@@ -15,11 +15,18 @@ export const loginSchema = z.object({
 });
 
 export const OTPSchema = z.object({
-  body: authSharedSchema
-    .extend({
-      OTP: z.string().length(6, 'OTP must be of length 6'),
-    })
-    .strict(),
+  body: z.union([
+    authSharedSchema
+      .extend({
+        OTP: z.string().length(6, 'OTP must be of length 6'),
+      })
+      .strict(),
+    z
+      .object({
+        idToken: z.string(),
+      })
+      .strict(),
+  ]),
 });
 
 export const refreshTokenSchema = z.object({
