@@ -3,8 +3,8 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 import env from './env';
 import APIError from '../utils/APIError';
-import prisma from './prisma';
 import statusCodes from '../utils/statusCodes';
+import userRepository from '../repositories/user.repository';
 
 passport.use(
   new GoogleStrategy(
@@ -21,19 +21,13 @@ passport.use(
             statusCodes.Unauthorized
           );
 
-        let user = await prisma.user.findUnique({
-          where: {
-            email: profile._json.email!,
-          },
-        });
+        let user = await userRepository.getUserByEmail(profile._json.email!);
 
         if (!user)
-          user = await prisma.user.create({
-            data: {
-              name: profile._json.name || 'user',
-              email: profile._json.email!,
-            },
-          });
+          user = await userRepository.createUser(
+            profile._json.email!,
+            profile._json.name
+          );
 
         cb(null, user);
       } catch (err) {

@@ -1,6 +1,5 @@
 import { User } from '@prisma/client';
 
-import prisma from '../config/prisma';
 import APIError from '../utils/APIError';
 import redisService from './redis.service';
 import statusCodes from '../utils/statusCodes';
@@ -13,6 +12,7 @@ import {
   verifyRefreshToken,
 } from '../utils/token';
 import firebase from '../config/firebase';
+import userRepository from '../repositories/user.repository';
 
 class AuthService {
   private OTPDuration = 5;
@@ -65,19 +65,13 @@ class AuthService {
           statusCodes.Unauthorized
         );
 
-      let user = await prisma.user.findUnique({
-        where: {
-          email: decodedIdToken.email!,
-        },
-      });
+      let user = await userRepository.getUserByEmail(decodedIdToken.email!);
 
       if (!user)
-        user = await prisma.user.create({
-          data: {
-            name: decodedIdToken.name || 'user',
-            email: decodedIdToken.email!,
-          },
-        });
+        user = await userRepository.createUser(
+          decodedIdToken.email!,
+          decodedIdToken.name
+        );
 
       result.data = user;
       result.accessToken = generateAccessToken(user);
@@ -97,19 +91,10 @@ class AuthService {
     await redisService.DEL(body.email);
 
     // Check if user existed or not
-    let user = await prisma.user.findUnique({
-      where: {
-        email: body.email,
-      },
-    });
+    let user = await userRepository.getUserByEmail(body.email);
 
     if (!user) {
-      user = await prisma.user.create({
-        data: {
-          name: body.name,
-          email: body.email,
-        },
-      });
+      user = await userRepository.createUser(body.email, body.name);
 
       result.statusCode = statusCodes.Created;
     }
@@ -129,11 +114,7 @@ class AuthService {
         statusCodes.Unauthorized
       );
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id,
-      },
-    });
+    const user = await userRepository.getUserById(id);
 
     if (!user)
       throw new APIError(
