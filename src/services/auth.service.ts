@@ -1,3 +1,5 @@
+import { User } from '@prisma/client';
+
 import prisma from '../config/prisma';
 import APIError from '../utils/APIError';
 import redisService from './redis.service';
@@ -10,7 +12,7 @@ import {
   generateRefreshToken,
   verifyRefreshToken,
 } from '../utils/token';
-import { User } from '@prisma/client';
+import firebase from '../config/firebase';
 
 class AuthService {
   private OTPDuration = 5;
@@ -48,8 +50,42 @@ class AuthService {
     return res;
   };
 
-  // Need to do rate limiting on auth
-  login = async (body: OTPBody) => {
+  login = async (body: OTPBody): Promise<APIResponse> => {
+    const result: APIResponse = {
+      status: 'success',
+      statusCode: statusCodes.OK,
+    };
+
+    if ('idToken' in body) {
+      const decodedIdToken = await firebase.auth().verifyIdToken(body.idToken);
+
+      if (!decodedIdToken.email_verified)
+        throw new APIError(
+          'Your google account is not verified',
+          statusCodes.Unauthorized
+        );
+
+      let user = await prisma.user.findUnique({
+        where: {
+          email: decodedIdToken.email!,
+        },
+      });
+
+      if (!user)
+        user = await prisma.user.create({
+          data: {
+            name: decodedIdToken.name || 'user',
+            email: decodedIdToken.email!,
+          },
+        });
+
+      result.data = user;
+      result.accessToken = generateAccessToken(user);
+      result.refreshToken = generateRefreshToken({ id: user.id });
+
+      return result;
+    }
+
     // Get OTP
     const OTP = await redisService.GET(body.email);
 
@@ -66,11 +102,6 @@ class AuthService {
         email: body.email,
       },
     });
-
-    const result: APIResponse = {
-      status: 'success',
-      statusCode: statusCodes.OK,
-    };
 
     if (!user) {
       user = await prisma.user.create({

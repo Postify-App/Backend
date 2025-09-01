@@ -38,6 +38,10 @@ const envConfig = z
 
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+
+    FB_PROJECT_ID: z.string(),
+    FB_PRIVATE_KEY: z.string(),
+    FB_CLIENT_EMAIL: z.string(),
   })
   .parse(process.env);
 
