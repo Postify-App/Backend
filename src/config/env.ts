@@ -42,6 +42,10 @@ const envConfig = z
     FB_PROJECT_ID: z.string(),
     FB_PRIVATE_KEY: z.string(),
     FB_CLIENT_EMAIL: z.string(),
+
+    REDDIT_CLIENT_ID: z.string(),
+    REDDIT_CLIENT_SECRET: z.string(),
+    REDDIT_REDIRECT_URL: z.string(),
   })
   .parse(process.env);
 
@@ -59,6 +63,8 @@ if (envConfig.NODE_ENV === 'development') {
   SMTP_USER = envConfig.SG_USER;
   SMTP_PASS = envConfig.SG_PASS;
 }
+
+envConfig.REDDIT_REDIRECT_URL = BASE_URL + envConfig.REDDIT_REDIRECT_URL;
 
 export default {
   ...envConfig,

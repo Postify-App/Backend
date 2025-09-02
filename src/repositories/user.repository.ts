@@ -1,4 +1,5 @@
 import prisma from '../config/prisma';
+import { UpdatedUserData } from '../types/user.types';
 
 class UserRepository {
   private user = prisma.user;
@@ -25,6 +26,15 @@ class UserRepository {
         name,
         email,
       },
+    });
+  };
+
+  getUserByIdAndUpdate = async (id: string, data: UpdatedUserData) => {
+    await this.user.update({
+      where: {
+        id,
+      },
+      data,
     });
   };
 }
