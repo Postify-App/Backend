@@ -1,6 +1,5 @@
 import cors from 'cors';
 import morgan from 'morgan';
-import multer from 'multer';
 import express from 'express';
 
 import env from './config/env';
@@ -31,8 +30,6 @@ app.use(
 
 // Rate Limiting
 app.use(limiter);
-
-multer({ storage: multer.memoryStorage() }).none();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
