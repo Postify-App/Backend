@@ -28,4 +28,4 @@ router
   .patch(uploadLogo, validate(BusinessSchema), updateBusiness)
   .delete(deleteBusiness);
 
-export const businessRouter = router;
+export const businessRoutes = router;
