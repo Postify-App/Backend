@@ -16,12 +16,31 @@ datasource db {
 }
 
 model User {
+  id        String     @id @default(uuid())
+  name      String
+  email     String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now()) @updatedAt
+  Business  Business[]
+}
+
+model Business {
   id                 String    @id @default(uuid())
+  userId             String
   name               String
-  email              String    @unique
-  redditAccessToken  String?   @unique
-  redditRefreshToken String?   @unique
+  email              String?
+  description        String
+  size               String
+  longitude          Float
+  latitude           Float
+  redditAccessToken  String?
+  redditRefreshToken String?
   redditExpiresIn    DateTime?
+  logo               String?
+  mainTopic          String
+  toneOfVoice        String
+  mainGoal           String
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @default(now()) @updatedAt
+  author             User      @relation(fields: [userId], references: [id])
 }

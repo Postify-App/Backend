@@ -1,8 +1,8 @@
-import QueryString from 'qs';
+// import QueryString from 'qs';
 import { User } from '@prisma/client';
-import axios, { AxiosRequestConfig } from 'axios';
+// import axios, { AxiosRequestConfig } from 'axios';
 
-import env from '../config/env';
+// import env from '../config/env';
 import APIError from '../utils/APIError';
 import redisService from './redis.service';
 import statusCodes from '../utils/statusCodes';
@@ -16,8 +16,8 @@ import {
 } from '../utils/token';
 import firebase from '../config/firebase';
 import userRepository from '../repositories/user.repository';
-import { UpdatedUserData } from '../types/user.types';
-import logger from '../config/logger';
+// import { UpdatedUserData } from '../types/user.types';
+// import logger from '../config/logger';
 
 class AuthService {
   private OTPDuration = 5;
@@ -150,45 +150,45 @@ class AuthService {
     return result;
   };
 
-  handleRedditCallback = async (code: string, user: User) => {
-    const queryString = QueryString.stringify({
-      grant_type: 'authorization_code',
-      code,
-      redirect_uri: env.REDDIT_REDIRECT_URL,
-    });
+  // handleRedditCallback = async (code: string, user: User) => {
+  //   const queryString = QueryString.stringify({
+  //     grant_type: 'authorization_code',
+  //     code,
+  //     redirect_uri: env.REDDIT_REDIRECT_URL,
+  //   });
 
-    const config: AxiosRequestConfig = {
-      auth: {
-        username: env.REDDIT_CLIENT_ID,
-        password: env.REDDIT_CLIENT_SECRET,
-      },
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    };
+  //   const config: AxiosRequestConfig = {
+  //     auth: {
+  //       username: env.REDDIT_CLIENT_ID,
+  //       password: env.REDDIT_CLIENT_SECRET,
+  //     },
+  //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  //   };
 
-    const response = await axios.post(
-      'https://www.reddit.com/api/v1/access_token',
-      queryString,
-      config
-    );
+  //   const response = await axios.post(
+  //     'https://www.reddit.com/api/v1/access_token',
+  //     queryString,
+  //     config
+  //   );
 
-    const data: UpdatedUserData = {
-      redditAccessToken: response.data.access_token,
-      redditRefreshToken: response.data.refresh_token,
-      redditExpiresIn: response.data.expires_in,
-    };
+  //   const data: UpdatedUserData = {
+  //     redditAccessToken: response.data.access_token,
+  //     redditRefreshToken: response.data.refresh_token,
+  //     redditExpiresIn: Date.now() + response.data.expires_in,
+  //   };
 
-    await userRepository.getUserByIdAndUpdate(user.id, data);
+  //   await userRepository.getUserByIdAndUpdate(user.id, data);
 
-    logger.info(`${user.email} has just integrated reddit successfully`);
+  //   logger.info(`${user.email} has just integrated reddit successfully`);
 
-    const result: APIResponse = {
-      status: 'success',
-      statusCode: statusCodes.OK,
-      message: 'Reddit integration completed successfully',
-    };
+  //   const result: APIResponse = {
+  //     status: 'success',
+  //     statusCode: statusCodes.OK,
+  //     message: 'Reddit integration completed successfully',
+  //   };
 
-    return result;
-  };
+  //   return result;
+  // };
 }
 
 export default new AuthService();

@@ -4,8 +4,8 @@ import validate from '../../middlewares/validate';
 import {
   googleCallbackHandler,
   login,
-  redditCallbackHandler,
-  redditLogin,
+  // redditCallbackHandler,
+  // redditLogin,
   refreshToken,
   sendOTP,
 } from '../../controllers/auth.controller';
@@ -16,7 +16,7 @@ import {
 } from '../../validation/auth.validate';
 import rateLimit from 'express-rate-limit';
 import passport from '../../config/passport';
-import isAuthenticated from '../../middlewares/isAuthenticated';
+// import isAuthenticated from '../../middlewares/isAuthenticated';
 
 const router = Router();
 
@@ -43,7 +43,7 @@ router.get(
   googleCallbackHandler
 );
 
-router.get('/reddit', isAuthenticated, redditLogin);
-router.get('/reddit/callback', isAuthenticated, redditCallbackHandler);
+// router.get('/reddit', isAuthenticated, redditLogin);
+// router.get('/reddit/callback', isAuthenticated, redditCallbackHandler);
 
 export const authRoutes = router;
