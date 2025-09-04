@@ -5,7 +5,7 @@ import sendResponse from '../utils/sendResponse';
 import toneOfVoiceService from '../services/toneOfVoice.service';
 
 export const createToneOfVoice: RequestHandler = async (req, res, next) => {
-  req.body.logo = req.file?.filename;
+  req.body.logo = req.file?.path;
   const result = await toneOfVoiceService.createToneOfVoice(req.body);
   sendResponse(res, result);
 };
@@ -25,7 +25,7 @@ export const getToneOfVoiceById: RequestHandler<Id> = async (
 };
 
 export const updateToneOfVoice: RequestHandler<Id> = async (req, res, next) => {
-  req.body.logo = req.file?.filename;
+  req.body.logo = req.file?.path;
   const result = await toneOfVoiceService.updateToneOfVoice(
     req.params.id,
     req.body
