@@ -14,8 +14,16 @@ export const generateAccessToken = (data: object) =>
 export const generateRefreshToken = (data: object) =>
   generateToken(data, env.REFRESH_TOKEN_SECRET, env.REFRESH_TOKEN_EXPIRES_IN);
 
-const verifyToken = <T>(token: string, secret: string): T & JwtPayload =>
-  verify(token, secret) as T & JwtPayload;
+const verifyToken = <T>(
+  token: string,
+  secret: string
+): (T & JwtPayload) | false => {
+  try {
+    return verify(token, secret) as T & JwtPayload;
+  } catch (err) {
+    return false;
+  }
+};
 
 export const verifyAccessToken = (token: string) =>
   verifyToken<AccessTokenPayload>(token, env.ACCESS_TOKEN_SECRET);

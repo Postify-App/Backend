@@ -112,13 +112,14 @@ class AuthService {
   };
 
   refreshToken = async (body: RefreshTokenBody) => {
-    const { id } = verifyRefreshToken(body.refreshToken);
-    if (!id)
+    const payload = verifyRefreshToken(body.refreshToken);
+    if (!payload || !payload.id)
       throw new APIError(
         'Your refresh token is invalid or has expired',
         statusCodes.Unauthorized
       );
 
+    const { id } = payload;
     const user = await userRepository.getUserById(id);
 
     if (!user)
