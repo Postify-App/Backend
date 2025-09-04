@@ -45,3 +45,26 @@ model Business {
   updatedAt          DateTime  @default(now()) @updatedAt
   author             User      @relation(fields: [userId], references: [id])
 }
+
+model MainTopic {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  logo        String
+}
+
+model ToneOfVoice {
+  id    String @id @default(uuid())
+  title String
+  logo  String
+}
+
+model MainGoal {
+  id    String @id @default(uuid())
+  title String
+}
+
+model TargetAudience {
+  id    String @id @default(uuid())
+  title String
+}

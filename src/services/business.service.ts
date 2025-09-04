@@ -64,10 +64,16 @@ class BusinessService {
   getBusinessById = async (id: string) => {
     const bs = await businessRepository.getBusinessById(id);
 
+    if (!bs)
+      throw new APIError(
+        'There is no business with this id',
+        statusCodes.NotFound
+      );
+
     const result: APIResponse = {
       status: 'success',
       statusCode: statusCodes.OK,
-      data: bs!,
+      data: bs,
     };
 
     return result;

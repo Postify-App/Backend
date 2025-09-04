@@ -11,7 +11,7 @@ import globalErrorHandler from './middlewares/globalErrorHandler';
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
-  limit: 100,
+  limit: 400,
   message: 'You reached your limit, Please try again later.',
 });
 
