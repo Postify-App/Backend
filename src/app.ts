@@ -1,5 +1,6 @@
 import cors from 'cors';
 import morgan from 'morgan';
+import multer from 'multer';
 import express from 'express';
 
 import env from './config/env';
@@ -31,8 +32,10 @@ app.use(
 // Rate Limiting
 app.use(limiter);
 
-app.use(express.json());
+multer({ storage: multer.memoryStorage() }).none();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan(env.NODE_ENV === 'development' ? 'dev' : 'combined'));
 
 // Health check endpoint
