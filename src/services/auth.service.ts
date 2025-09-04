@@ -130,7 +130,9 @@ class AuthService {
     const result: APIResponse = {
       status: 'success',
       statusCode: statusCodes.OK,
+      data: user,
       accessToken: generateAccessToken(user),
+      refreshToken: body.refreshToken,
     };
 
     return result;
