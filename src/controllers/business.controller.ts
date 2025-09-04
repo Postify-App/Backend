@@ -6,7 +6,7 @@ import sendResponse from '../utils/sendResponse';
 import businessService from '../services/business.service';
 
 export const createBusiness: RequestHandler = async (req, res, next) => {
-  req.body.logo = req.file?.filename;
+  req.body.logo = req.file?.path;
   const result = await businessService.createBusiness(
     req.body,
     (req.user as User).id
@@ -30,7 +30,7 @@ export const getBusinessById: RequestHandler<Id> = async (req, res, next) => {
 };
 
 export const updateBusiness: RequestHandler<Id> = async (req, res, next) => {
-  req.body.logo = req.file?.filename;
+  req.body.logo = req.file?.path;
   const result = await businessService.updateBusiness(
     (req.user! as User).id,
     req.params.id,

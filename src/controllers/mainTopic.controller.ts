@@ -4,7 +4,7 @@ import sendResponse from '../utils/sendResponse';
 import { Id } from '../types/api.types';
 
 export const createMainTopic: RequestHandler = async (req, res, next) => {
-  req.body.logo = req.file?.filename;
+  req.body.logo = req.file?.path;
   const result = await mainTopicService.createMainTopic(req.body);
 
   sendResponse(res, result);
@@ -23,7 +23,7 @@ export const getTopic: RequestHandler<Id> = async (req, res, next) => {
 };
 
 export const editMainTopic: RequestHandler<Id> = async (req, res, next) => {
-  req.body.logo = req.file?.filename;
+  req.body.logo = req.file?.path;
   const result = await mainTopicService.editMainTopic(req.params.id, req.body);
 
   sendResponse(res, result);
