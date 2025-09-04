@@ -27,19 +27,20 @@ model User {
 model Business {
   id                 String    @id @default(uuid())
   userId             String
-  name               String
+  name               String?
   email              String?
-  description        String
-  size               String
-  longitude          Float
-  latitude           Float
+  description        String?
+  size               String?
+  longitude          Float?
+  latitude           Float?
   redditAccessToken  String?
   redditRefreshToken String?
   redditExpiresIn    DateTime?
   logo               String?
-  mainTopic          String
-  toneOfVoice        String
-  mainGoal           String
+  mainTopic          String?
+  toneOfVoice        String?
+  mainGoal           String?
+  targetAudience     String?
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @default(now()) @updatedAt
   author             User      @relation(fields: [userId], references: [id])
