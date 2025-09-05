@@ -2,104 +2,94 @@ doctype html
 html(lang="en")
   head
     meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title= subject
-    style.
-      body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        color: #333;
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f4f4f4;
-      }
-      .container {
-        background-color: #ffffff;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      }
-      .header {
-        text-align: center;
-        margin-bottom: 30px;
-      }
-      .logo {
-        font-size: 28px;
-        font-weight: bold;
-        color: #9412ED;
-        margin-bottom: 10px;
-      }
-      .otp-code {
-        background-color: #f8fafc;
-        border: 2px dashed #9412ED;
-        padding: 20px;
-        text-align: center;
-        margin: 20px 0;
-        border-radius: 8px;
-      }
-      .otp-number {
-        font-size: 32px;
-        font-weight: bold;
-        color: #9412ED;
-        letter-spacing: 4px;
-        font-family: monospace;
-      }
-      .button {
-        display: inline-block;
-        background: linear-gradient(135deg, #9412ED 0%, #6BED12 100%);
-        color: white;
-        padding: 12px 24px;
-        text-decoration: none;
-        border-radius: 6px;
-        margin: 20px 0;
-        font-weight: bold;
-        transition: transform 0.2s ease;
-      }
-      .button:hover {
-        transform: translateY(-2px);
-      }
-      .footer {
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 1px solid #e5e7eb;
-        font-size: 14px;
-        color: #6b7280;
-        text-align: center;
-      }
-      .warning {
-        background-color: #fef3c7;
-        border-left: 4px solid #6BED12;
-        padding: 12px;
-        margin: 20px 0;
-        border-radius: 4px;
-      }
-      .accent-text {
-        color: #9412ED;
-        font-weight: bold;
-      }
+  body(style="margin: 0; padding: 0; background-color: #9412ed; width: 100%")
+    //- Wrapper Table
+    table(
+      role="presentation",
+      width="100%",
+      cellspacing="0",
+      cellpadding="0",
+      border="0",
+      style="background-color: #9412ed"
+    )
+      tr
+        td(align="center")
+          //- Logo
+          table(
+            role="presentation",
+            width="100%",
+            cellspacing="0",
+            cellpadding="0",
+            border="0",
+            style="max-width: 600px"
+          )
+            tr
+              td(align="center", style="padding: 25px 0")
+                img(
+                  src="https://i.postimg.cc/QdQcvGN7/Log00o.png",
+                  alt="Postify Logo",
+                  width="180",
+                  style="display: block"
+                )
 
-  body
-    .container
-      .header
-        .logo Postify
-        h1 Email Verification Required
-      
-      p Hello #{firstName},
-      
-      p Welcome to <span class="accent-text">Postify</span>! To complete your account setup, please verify your email address using the One-Time Passcode below:
-      
-      .otp-code
-        p Your verification code is:
-        .otp-number= OTP
-        p This code will expire in 5 minutes.
-      
-      .warning
-        p ⚠️ <strong>Important:</strong> Never share this code with anyone. Our team will never ask for your verification code.
-      
-      p If you didn't create an account with <span class="accent-text">Postify</span>, please ignore this email.
-      
-      .footer
-        p This email was sent to you because someone tried to create an account with your email address.
-        p If you have any questions, please contact our support team.
-        p © 2025 <span class="accent-text">Postify</span>. All rights reserved.
+          //- Content Card
+          table(
+            role="presentation",
+            width="100%",
+            cellspacing="0",
+            cellpadding="0",
+            border="0",
+            style="max-width: 600px; background: #ffffff; border-radius: 20px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); overflow: hidden;"
+          )
+            tr
+              td(
+                align="center",
+                style="padding: 40px 25px; font-family: Roboto, Arial, sans-serif;"
+              )
+                //- Title
+                h2(style="color: #9412ed; font-size: 26px; margin: 0 0 10px; font-weight: 700;")
+                  | Verify Your Email Address
+                hr(style="border: 0; border-top: 1px solid #eee; margin: 20px 0; width: 90%;")
+
+                //- Greeting
+                p(style="color: #444; font-size: 16px; line-height: 26px; margin: 0 0 20px;")
+                  | Hi 
+                  b= firstName
+                  | ,
+                  br
+                  br
+                  | Thanks for joining 
+                  b(style="color: #9412ed") Postify
+                  | ! To activate your account, please confirm your email using the one-time code below:
+
+                //- OTP Box
+                div(style="background: #fafafa; border: 2px solid #9412ed; border-radius: 14px; padding: 25px 20px; margin: 20px auto; max-width: 380px;")
+                  p(style="font-size: 14px; color: #666; margin: 0 0 12px")
+                    | Your secure code:
+                  div(style="font-size: 34px; font-weight: bold; color: #9412ed; letter-spacing: 6px; background: #fff; border: 1px dashed #9412ed; border-radius: 10px; display: inline-block; padding: 12px 24px;")
+                    = OTP
+                  p(style="font-size: 13px; color: #777; margin: 15px 0 0")
+                    | This code will expire in 
+                    b 5 minutes
+                    | .
+
+                //- Warning
+                div(style="background-color: #fff8e5; border-left: 5px solid #ff9800; padding: 14px 16px; margin: 20px auto 10px; border-radius: 6px; font-size: 14px; color: #444; text-align: left; max-width: 420px;")
+                  strong Security Notice:
+                  |  Never share this code with anyone. Our support team will never request it.
+
+                //- Divider
+                hr(style="border: 0; border-top: 1px solid #eee; margin: 25px 0; width: 90%;")
+
+                //- Footer
+                div(style="font-size: 12px; color: #888; text-align: center; line-height: 18px;")
+                  p(style="margin: 0 0 10px")
+                    | Didn't create an account with 
+                    span(style="color: #9412ed; font-weight: bold") Postify
+                    | ? You can safely ignore this email.
+                  p(style="margin: 0")
+                    | © 2025 
+                    span(style="color: #9412ed; font-weight: bold") Postify
+                    | . All rights reserved.
