@@ -1,5 +1,7 @@
 import { Router } from 'express';
+
 import { authRoutes } from './auth.routes';
+import { userRoutes } from './user.routes';
 import { redditRoutes } from './reddit.routes';
 import { mainGoalRoutes } from './mainGoal.routes';
 import { businessRoutes } from './business.routes';
@@ -10,6 +12,7 @@ import { targetAudienceRoutes } from './targetAudience.routes';
 const router = Router();
 
 router.use('/auth', authRoutes);
+router.use('/user', userRoutes);
 router.use('/reddit', redditRoutes);
 router.use('/business', businessRoutes);
 router.use('/main-goal', mainGoalRoutes);
