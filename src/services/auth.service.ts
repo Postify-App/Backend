@@ -16,7 +16,6 @@ import {
 } from '../utils/token';
 import userRepository from '../repositories/user.repository';
 import googleClient from '../config/googleClient';
-import env from '../config/env';
 // import { UpdatedUserData } from '../types/user.types';
 // import logger from '../config/logger';
 
@@ -66,7 +65,6 @@ class AuthService {
       const { idToken } = body;
       const ticket = await googleClient.verifyIdToken({
         idToken,
-        audience: env.GOOGLE_CLIENT_ID,
       });
 
       const payload = ticket.getPayload();
