@@ -14,8 +14,9 @@ import {
   generateRefreshToken,
   verifyRefreshToken,
 } from '../utils/token';
-import firebase from '../config/firebase';
 import userRepository from '../repositories/user.repository';
+import googleClient from '../config/googleClient';
+import env from '../config/env';
 // import { UpdatedUserData } from '../types/user.types';
 // import logger from '../config/logger';
 
@@ -62,21 +63,29 @@ class AuthService {
     };
 
     if ('idToken' in body) {
-      const decodedIdToken = await firebase.auth().verifyIdToken(body.idToken);
+      const { idToken } = body;
+      const ticket = await googleClient.verifyIdToken({
+        idToken,
+        audience: env.GOOGLE_CLIENT_ID,
+      });
 
-      if (!decodedIdToken.email_verified)
+      const payload = ticket.getPayload();
+      if (!payload)
+        throw new APIError(
+          'Invalid Google ID token Payload',
+          statusCodes.Unauthorized
+        );
+
+      if (!payload.email_verified)
         throw new APIError(
           'Your google account is not verified',
           statusCodes.Unauthorized
         );
 
-      let user = await userRepository.getUserByEmail(decodedIdToken.email!);
+      let user = await userRepository.getUserByEmail(payload.email!);
 
       if (!user)
-        user = await userRepository.createUser(
-          decodedIdToken.email!,
-          decodedIdToken.name
-        );
+        user = await userRepository.createUser(payload.email!, payload.name);
 
       result.data = user;
       result.accessToken = generateAccessToken(user);
