@@ -17,10 +17,10 @@ export const BusinessSchema = z.object({
         .min(-90, 'Latitude must be between -90 and 90')
         .max(90, 'Latitude must be between -90 and 90')
         .optional(),
-      mainTopic: z.string().optional(),
-      toneOfVoice: z.string().optional(),
-      mainGoal: z.string().optional(),
-      targetAudience: z.string().optional(),
+      mainTopicId: z.string().optional(),
+      toneOfVoiceId: z.string().optional(),
+      mainGoalId: z.string().optional(),
+      targetAudienceId: z.string().optional(),
     })
     .strict(),
 });

@@ -4,6 +4,7 @@ import logger from '../config/logger';
 import APIError from '../utils/APIError';
 import statusCodes from '../utils/statusCodes';
 import { APIResponse } from '../types/api.types';
+import cloudinaryService from './cloudinary.service';
 import { CleanBusiness } from '../types/business.types';
 import businessRepository from '../repositories/business.repository';
 
@@ -29,6 +30,11 @@ class BusinessService {
   };
 
   createBusiness = async (data: Business, userId: string) => {
+    if (data.logo) {
+      const { secure_url } = await cloudinaryService.uploadToCloud(data.logo);
+      data.logo = secure_url;
+    }
+
     data.userId = userId;
 
     const business = await businessRepository.createBusiness(data);
@@ -36,7 +42,7 @@ class BusinessService {
     const res: APIResponse = {
       status: 'success',
       statusCode: statusCodes.Created,
-      data: business,
+      data: this.cleanBusiness(business),
     };
 
     logger.info(

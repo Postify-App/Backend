@@ -4,9 +4,13 @@ import statusCodes from '../utils/statusCodes';
 import { APIResponse } from '../types/api.types';
 import toneOfVoiceRepository from '../repositories/toneOfVoice.repository';
 import APIError from '../utils/APIError';
+import cloudinaryService from './cloudinary.service';
 
 class ToneOfVoiceService {
   createToneOfVoice = async (data: ToneOfVoice) => {
+    const { secure_url } = await cloudinaryService.uploadToCloud(data.logo);
+
+    data.logo = secure_url;
     const toneOfVoice = await toneOfVoiceRepository.create(data);
 
     const result: APIResponse = {

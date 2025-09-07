@@ -42,6 +42,10 @@ const envConfig = z
     REDDIT_CLIENT_ID: z.string(),
     REDDIT_CLIENT_SECRET: z.string(),
     REDDIT_REDIRECT_URL: z.string(),
+
+    CLOUDINARY_NAME: z.string(),
+    CLOUDINARY_API_KEY: z.string(),
+    CLOUDINARY_API_SECRET: z.string(),
   })
   .parse(process.env);
 

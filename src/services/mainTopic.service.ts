@@ -1,11 +1,16 @@
 import { MainTopic } from '@prisma/client';
-import mainTopicRepository from '../repositories/mainTopic.repository';
-import { APIResponse } from '../types/api.types';
-import statusCodes from '../utils/statusCodes';
+
 import APIError from '../utils/APIError';
+import statusCodes from '../utils/statusCodes';
+import { APIResponse } from '../types/api.types';
+import cloudinaryService from './cloudinary.service';
+import mainTopicRepository from '../repositories/mainTopic.repository';
 
 class MainTopicService {
   createMainTopic = async (data: MainTopic) => {
+    const { secure_url } = await cloudinaryService.uploadToCloud(data.logo);
+
+    data.logo = secure_url;
     const mainTopic = await mainTopicRepository.createMainTopic(data);
 
     const result: APIResponse = {
