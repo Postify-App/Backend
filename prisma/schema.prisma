@@ -37,34 +37,43 @@ model Business {
   redditRefreshToken String?
   redditExpiresIn    DateTime?
   logo               String?
-  mainTopic          String?
-  toneOfVoice        String?
-  mainGoal           String?
-  targetAudience     String?
+  mainTopicId        String?
+  toneOfVoiceId      String?
+  mainGoalId         String?
+  targetAudienceId   String?
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @default(now()) @updatedAt
-  author             User      @relation(fields: [userId], references: [id])
+
+  author         User            @relation(fields: [userId], references: [id])
+  mainGoal       MainGoal?       @relation(fields: [mainGoalId], references: [id])
+  mainTopic      MainTopic?      @relation(fields: [mainTopicId], references: [id])
+  toneOfVoice    ToneOfVoice?    @relation(fields: [toneOfVoiceId], references: [id])
+  targetAudience TargetAudience? @relation(fields: [targetAudienceId], references: [id])
 }
 
 model MainTopic {
-  id          String @id @default(uuid())
+  id          String     @id @default(uuid())
   title       String
   description String
   logo        String
+  Business    Business[]
 }
 
 model ToneOfVoice {
-  id    String @id @default(uuid())
-  title String
-  logo  String
+  id       String     @id @default(uuid())
+  title    String
+  logo     String
+  Business Business[]
 }
 
 model MainGoal {
-  id    String @id @default(uuid())
-  title String
+  id       String     @id @default(uuid())
+  title    String
+  Business Business[]
 }
 
 model TargetAudience {
-  id    String @id @default(uuid())
-  title String
+  id       String     @id @default(uuid())
+  title    String
+  Business Business[]
 }

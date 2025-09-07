@@ -6,7 +6,8 @@ import sendResponse from '../utils/sendResponse';
 import businessService from '../services/business.service';
 
 export const createBusiness: RequestHandler = async (req, res, next) => {
-  req.body.logo = req.file?.path;
+  if (req.file) req.body.logo = req.file.path;
+
   const result = await businessService.createBusiness(
     req.body,
     (req.user as User).id

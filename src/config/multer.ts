@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let uploadPath: string = `${__dirname}/../uploads/`;
 
-    if (file.fieldname === 'logo') uploadPath += 'business/logo';
+    if (file.fieldname === 'logo') uploadPath += 'logo';
     else uploadPath += 'others';
 
     if (!fs.existsSync(uploadPath))
