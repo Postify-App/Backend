@@ -116,6 +116,26 @@ class BusinessService {
 
     return result;
   };
+
+  getBusinessInfoById = async (currentUserId: string, id: string) => {
+    this.checkIfBusinessUser(currentUserId, id);
+
+    const bs = await businessRepository.getInfoById(id);
+
+    const result: APIResponse = {
+      status: 'success',
+      statusCode: statusCodes.OK,
+      data: {
+        userId: bs.userId,
+        targetAudience: bs.targetAudience?.title || null,
+        mainGoal: bs.mainGoal?.title || null,
+        mainTopic: bs.mainTopic?.title || null,
+        toneOfVoice: bs.toneOfVoice?.title || null,
+      },
+    };
+
+    return result;
+  };
 }
 
 export default new BusinessService();

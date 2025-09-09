@@ -47,3 +47,15 @@ export const deleteBusiness: RequestHandler<Id> = async (req, res, next) => {
   );
   sendResponse(res, result);
 };
+
+export const getBusinessInfoById: RequestHandler<Id> = async (
+  req,
+  res,
+  next
+) => {
+  const result = await businessService.getBusinessInfoById(
+    (req.user! as User).id,
+    req.params.id
+  );
+  sendResponse(res, result);
+};
