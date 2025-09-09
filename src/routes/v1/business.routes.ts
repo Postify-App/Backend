@@ -7,6 +7,7 @@ import {
   createBusiness,
   deleteBusiness,
   getBusinessById,
+  getBusinessInfoById,
   getCurrentUserBusinesses,
   updateBusiness,
 } from '../../controllers/business.controller';
@@ -20,6 +21,8 @@ router.use(isAuthenticated);
 router.route('/').post(uploadLogo, validate(BusinessSchema), createBusiness);
 
 router.get('/me', getCurrentUserBusinesses);
+
+router.get('/info/:id', getBusinessInfoById);
 
 router
   .route('/:id')

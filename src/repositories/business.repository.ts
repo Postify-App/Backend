@@ -1,5 +1,7 @@
 import { Business } from '@prisma/client';
 import prisma from '../config/prisma';
+import APIError from '../utils/APIError';
+import statusCodes from '../utils/statusCodes';
 
 class BusinessRepository {
   private business = prisma.business;
@@ -39,6 +41,45 @@ class BusinessRepository {
     await this.business.delete({
       where: { id },
     });
+  };
+
+  getInfoById = async (id: string) => {
+    const business = await this.business.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        userId: true,
+        targetAudience: {
+          select: {
+            title: true,
+          },
+        },
+        toneOfVoice: {
+          select: {
+            title: true,
+          },
+        },
+        mainGoal: {
+          select: {
+            title: true,
+          },
+        },
+        mainTopic: {
+          select: {
+            title: true,
+          },
+        },
+      },
+    });
+
+    if (!business)
+      throw new APIError(
+        'No business found with this id',
+        statusCodes.BadRequest
+      );
+
+    return business;
   };
 }
 
