@@ -22,6 +22,7 @@ model User {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @default(now()) @updatedAt
   Business  Business[]
+  Post      Post[]
 }
 
 model Business {
@@ -49,6 +50,7 @@ model Business {
   mainTopic      MainTopic?      @relation(fields: [mainTopicId], references: [id])
   toneOfVoice    ToneOfVoice?    @relation(fields: [toneOfVoiceId], references: [id])
   targetAudience TargetAudience? @relation(fields: [targetAudienceId], references: [id])
+  Post           Post[]
 }
 
 model MainTopic {
@@ -76,4 +78,19 @@ model TargetAudience {
   id       String     @id @default(uuid())
   title    String
   Business Business[]
+}
+
+model Post {
+  id          String   @id @default(uuid())
+  title       String?
+  description String
+  userId      String
+  businessId  String
+  isPosted    Boolean  @default(true)
+  hashtags    String[] @default([])
+  createdAt   DateTime @default(now())
+  scheduledAt DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  author      User     @relation(fields: [userId], references: [id])
+  business    Business @relation(fields: [businessId], references: [id])
 }

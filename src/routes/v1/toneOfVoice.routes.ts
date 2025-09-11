@@ -14,7 +14,7 @@ import { IdSchema } from '../../validation/api.validate';
 import {
   TitleSchema,
   OptionalTitleSchema,
-} from '../../validation/cards.validation';
+} from '../../validation/cards.validate';
 
 const router = Router();
 

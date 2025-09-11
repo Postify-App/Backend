@@ -20,8 +20,9 @@ class BusinessService {
     return cleanedBusiness;
   };
 
-  private checkIfBusinessUser = async (currentUserId: string, id: string) => {
+  checkIfBusinessUser = async (currentUserId: string, id: string) => {
     const { userId } = (await businessRepository.getBusinessById(id))!;
+
     if (userId !== currentUserId)
       throw new APIError(
         'You are not authorized to update this business',
