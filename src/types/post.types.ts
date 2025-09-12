@@ -23,3 +23,11 @@ export type GetBusinessPostParams = z.output<
 export type GetBusinessPostQuery = z.output<
   typeof GetBusinessPostSchema
 >['query'];
+
+export type GetBusinessPostsCondition = {
+  businessId: string;
+  scheduledAt?: {
+    lte?: Date;
+    gt?: Date;
+  };
+};
