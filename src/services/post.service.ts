@@ -1,24 +1,96 @@
 import { Post } from '@prisma/client';
-import { APIResponse } from '../types/api.types';
+
+import redisService from './redis.service';
 import statusCodes from '../utils/statusCodes';
-import postRepository from '../repositories/post.repository';
+import { APIResponse } from '../types/api.types';
 import businessService from './business.service';
+import postRepository from '../repositories/post.repository';
+import { CreatePostBody, PublishPostBody, TPost } from '../types/post.types';
+import APIError from '../utils/APIError';
+import cloudinaryService from './cloudinary.service';
 
 class PostService {
-  async createPost(data: Post, userId: string) {
-    await businessService.checkIfBusinessUser(userId, data.businessId);
+  private CACHE_TTL = 12;
+  private CACHE_KEY = 'post';
 
-    data.userId = userId;
+  private enhanceData = (data: CreatePostBody, userId: string): TPost => {
+    const ret: TPost = {
+      userId,
+      title: data.title,
+      hasEmojis: data.has_emojis,
+      businessId: data.business_id,
+      requiredWords: data.required_words,
+      forbiddenWords: data.forbidden_words,
+      approximateWords: data.approximate_words,
+      description: data.description.split('\n')[0]!,
+      hashtags: data.description.match(/#[\w]+/g) || [],
+    };
 
-    const post = await postRepository.createPost(data);
+    return ret;
+  };
+
+  createPost = async (data: CreatePostBody, userId: string) => {
+    await businessService.checkIfBusinessUser(userId, data.business_id);
+
+    const enhancedData = this.enhanceData(data, userId);
+
+    // Save post to redis with ttl = 12 hours
+    redisService.setJSON(
+      `${this.CACHE_KEY}:${enhancedData.businessId}`,
+      enhancedData,
+      this.CACHE_TTL
+    );
 
     const res: APIResponse = {
       status: 'success',
       statusCode: statusCodes.Created,
+      message: 'Post created successfully',
+    };
+
+    return res;
+  };
+
+  publishPost = async (
+    data: PublishPostBody,
+    userId: string,
+    businessId: string
+  ) => {
+    // Check if the business belong to user
+    await businessService.checkIfBusinessUser(userId, businessId);
+
+    // Get needed data from redis
+    const cachedData = await redisService.getJSON<TPost>(
+      `${this.CACHE_KEY}:${businessId}`
+    );
+
+    if (!cachedData)
+      throw new APIError(
+        'Post creation session has timed out. Please create a new post.',
+        statusCodes.BadRequest
+      );
+
+    // Delete from Redis
+    await redisService.DEL(`${this.CACHE_KEY}:${businessId}`);
+
+    const post = { ...data, ...cachedData };
+
+    // Upload the file to cloud
+    if (data.file) {
+      const { secure_url } = await cloudinaryService.uploadToCloud(data.file);
+      data.file = secure_url;
+    }
+
+    await postRepository.createPost(post as Post);
+
+    const result: APIResponse = {
+      status: 'success',
+      statusCode: statusCodes.OK,
       data: post,
     };
-    return res;
-  }
+
+    return result;
+  };
+
   async getCurrentUserPosts(userId: string) {
     const posts = await postRepository.getCurrentUserPosts(userId);
 

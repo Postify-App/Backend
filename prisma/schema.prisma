@@ -81,16 +81,20 @@ model TargetAudience {
 }
 
 model Post {
-  id          String   @id @default(uuid())
-  title       String?
-  description String
-  userId      String
-  businessId  String
-  isPosted    Boolean  @default(true)
-  hashtags    String[] @default([])
-  createdAt   DateTime @default(now())
-  scheduledAt DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
-  author      User     @relation(fields: [userId], references: [id])
-  business    Business @relation(fields: [businessId], references: [id])
+  id               String   @id @default(uuid())
+  title            String
+  description      String
+  userId           String
+  businessId       String
+  hashtags         String[] @default([])
+  createdAt        DateTime @default(now())
+  scheduledAt      DateTime
+  file             String?
+  hasEmojis        Boolean
+  approximateWords Int
+  requiredWords    String[]
+  forbiddenWords   String[]
+  updatedAt        DateTime @default(now()) @updatedAt
+  author           User     @relation(fields: [userId], references: [id])
+  business         Business @relation(fields: [businessId], references: [id])
 }

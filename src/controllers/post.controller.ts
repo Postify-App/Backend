@@ -1,10 +1,23 @@
+import { User } from '@prisma/client';
 import { RequestHandler } from 'express';
+
+import { Id } from '../types/api.types';
 import sendResponse from '../utils/sendResponse';
 import postService from '../services/post.service';
-import { User } from '@prisma/client';
 
 export const createPost: RequestHandler = async (req, res, next) => {
   const result = await postService.createPost(req.body, (req.user as User).id);
+  sendResponse(res, result);
+};
+
+export const publishPost: RequestHandler<Id> = async (req, res, next) => {
+  if (req.file) req.body.file = req.file.path;
+
+  const result = await postService.publishPost(
+    req.body,
+    (req.user as User).id,
+    req.params.id
+  );
   sendResponse(res, result);
 };
 
