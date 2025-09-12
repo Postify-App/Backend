@@ -5,23 +5,12 @@ import APIError from '../utils/APIError';
 import statusCodes from '../utils/statusCodes';
 import { APIResponse } from '../types/api.types';
 import cloudinaryService from './cloudinary.service';
-import { CleanBusiness } from '../types/business.types';
 import businessRepository from '../repositories/business.repository';
 
 class BusinessService {
-  private cleanBusiness = (business: Business): CleanBusiness => {
-    const {
-      redditAccessToken,
-      redditRefreshToken,
-      redditExpiresIn,
-      ...cleanedBusiness
-    } = business;
-
-    return cleanedBusiness;
-  };
-
-  private checkIfBusinessUser = async (currentUserId: string, id: string) => {
+  checkIfBusinessUser = async (currentUserId: string, id: string) => {
     const { userId } = (await businessRepository.getBusinessById(id))!;
+
     if (userId !== currentUserId)
       throw new APIError(
         'You are not authorized to update this business',
@@ -42,7 +31,7 @@ class BusinessService {
     const res: APIResponse = {
       status: 'success',
       statusCode: statusCodes.Created,
-      data: this.cleanBusiness(business),
+      data: business,
     };
 
     logger.info(
@@ -55,13 +44,11 @@ class BusinessService {
   getUserBusinesses = async (user: User) => {
     const businesses = await businessRepository.getUserBusinesses(user.id);
 
-    const cleanedBusinesses = businesses.map((bs) => this.cleanBusiness(bs));
-
     const result: APIResponse = {
       status: 'success',
       statusCode: statusCodes.OK,
-      size: cleanedBusinesses.length,
-      data: cleanedBusinesses,
+      size: businesses.length,
+      data: businesses,
     };
 
     return result;

@@ -9,6 +9,21 @@ class BusinessRepository {
   createBusiness = async (data: Business) => {
     return await this.business.create({
       data,
+      include: {
+        mainGoal: true,
+        mainTopic: true,
+        toneOfVoice: true,
+        targetAudience: true,
+      },
+      omit: {
+        mainGoalId: true,
+        mainTopicId: true,
+        toneOfVoiceId: true,
+        redditExpiresIn: true,
+        targetAudienceId: true,
+        redditAccessToken: true,
+        redditRefreshToken: true,
+      },
     });
   };
 
@@ -17,6 +32,21 @@ class BusinessRepository {
       where: {
         userId,
       },
+      include: {
+        mainGoal: true,
+        mainTopic: true,
+        toneOfVoice: true,
+        targetAudience: true,
+      },
+      omit: {
+        mainGoalId: true,
+        mainTopicId: true,
+        toneOfVoiceId: true,
+        redditExpiresIn: true,
+        targetAudienceId: true,
+        redditAccessToken: true,
+        redditRefreshToken: true,
+      },
     });
   };
 
@@ -24,6 +54,21 @@ class BusinessRepository {
     return await this.business.findUnique({
       where: {
         id,
+      },
+      include: {
+        mainGoal: true,
+        mainTopic: true,
+        toneOfVoice: true,
+        targetAudience: true,
+      },
+      omit: {
+        mainGoalId: true,
+        mainTopicId: true,
+        toneOfVoiceId: true,
+        redditExpiresIn: true,
+        targetAudienceId: true,
+        redditAccessToken: true,
+        redditRefreshToken: true,
       },
     });
   };
@@ -34,6 +79,21 @@ class BusinessRepository {
         id,
       },
       data,
+      include: {
+        mainGoal: true,
+        mainTopic: true,
+        toneOfVoice: true,
+        targetAudience: true,
+      },
+      omit: {
+        mainGoalId: true,
+        mainTopicId: true,
+        toneOfVoiceId: true,
+        redditExpiresIn: true,
+        targetAudienceId: true,
+        redditAccessToken: true,
+        redditRefreshToken: true,
+      },
     });
   };
 

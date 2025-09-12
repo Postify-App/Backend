@@ -12,6 +12,15 @@ class RedisService {
   DEL = async (key: string) => {
     await redis.DEL(key);
   };
+
+  setJSON = async (key: string, val: object, ttlInHours: number) => {
+    await redis.SETEX(key, ttlInHours * 60 * 60, JSON.stringify(val));
+  };
+
+  getJSON = async <T>(key: string): Promise<T | null> => {
+    const res = await redis.GET(key);
+    return res ? JSON.parse(res) : null;
+  };
 }
 
 export default new RedisService();
