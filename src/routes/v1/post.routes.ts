@@ -12,6 +12,7 @@ import isAuthenticated from '../../middlewares/isAuthenticated';
 import validate from '../../middlewares/validate';
 import {
   CreatePostSchema,
+  GetBusinessPostSchema,
   OptionalPostSchema,
   PublishPostSchema,
 } from '../../validation/post.validate';
@@ -32,8 +33,9 @@ router.post(
   publishPost
 );
 
-router.route('/me').get(getCurrentUserPosts);
-router.route('/business/:id').get(validate(IdSchema), getBusinessPosts);
+router.get('/me', getCurrentUserPosts);
+router.get('/business/:id', validate(GetBusinessPostSchema), getBusinessPosts);
+
 router
   .route('/:id')
   .all(validate(IdSchema))

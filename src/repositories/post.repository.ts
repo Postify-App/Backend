@@ -2,9 +2,36 @@ import { Post } from '@prisma/client';
 import prisma from '../config/prisma';
 import APIError from '../utils/APIError';
 import statusCodes from '../utils/statusCodes';
+import {
+  GetBusinessPostQuery,
+  GetBusinessPostsCondition,
+} from '../types/post.types';
 
 class PostRepository {
-  post = prisma.post;
+  private post = prisma.post;
+
+  private assignCondition = (
+    businessId: string,
+    query: GetBusinessPostQuery['status']
+  ) => {
+    const currentDate = new Date(Date.now());
+
+    const condition: GetBusinessPostsCondition = {
+      businessId,
+    };
+
+    if (query)
+      query === 'posted'
+        ? (condition.scheduledAt = {
+            lte: currentDate,
+          })
+        : (condition.scheduledAt = {
+            gt: currentDate,
+          });
+
+    return condition;
+  };
+
   async createPost(data: Post) {
     return await this.post.create({ data });
   }
@@ -24,10 +51,19 @@ class PostRepository {
     return posts;
   }
 
-  async getBusinessPosts(businessId: string) {
+  async getBusinessPosts(
+    businessId: string,
+    query: GetBusinessPostQuery['status']
+  ) {
+    const condition: GetBusinessPostsCondition = this.assignCondition(
+      businessId,
+      query
+    );
+
     const posts = await this.post.findMany({
-      where: {
-        businessId,
+      where: condition,
+      orderBy: {
+        scheduledAt: query === 'posted' ? 'desc' : 'asc',
       },
     });
 
@@ -36,6 +72,7 @@ class PostRepository {
         'No posts found with this business id',
         statusCodes.NotFound
       );
+
     return posts;
   }
 

@@ -4,6 +4,10 @@ import { RequestHandler } from 'express';
 import { Id } from '../types/api.types';
 import sendResponse from '../utils/sendResponse';
 import postService from '../services/post.service';
+import {
+  GetBusinessPostParams,
+  GetBusinessPostQuery,
+} from '../types/post.types';
 
 export const createPost: RequestHandler = async (req, res, next) => {
   const result = await postService.createPost(req.body, (req.user as User).id);
@@ -27,9 +31,16 @@ export const getCurrentUserPosts: RequestHandler = async (req, res, next) => {
   sendResponse(res, result);
 };
 
-export const getBusinessPosts: RequestHandler = async (req, res, next) => {
-  const result = await postService.getBusinessPosts(req.params.id!);
-
+export const getBusinessPosts: RequestHandler<
+  GetBusinessPostParams,
+  {},
+  {},
+  GetBusinessPostQuery
+> = async (req, res, next) => {
+  const result = await postService.getBusinessPosts(
+    req.params.id,
+    req.query.status
+  );
   sendResponse(res, result);
 };
 

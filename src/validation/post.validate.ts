@@ -36,6 +36,23 @@ export const PublishPostSchema = z.object({
     .strict(),
 });
 
+export const GetBusinessPostSchema = z.object({
+  params: z
+    .object({
+      id: z.uuid('Provided id must be in valid UUID format'),
+    })
+    .strict(),
+  query: z
+    .object({
+      status: z
+        .enum(['scheduled', 'posted'], {
+          message: 'Status must be either "scheduled" or "posted"',
+        })
+        .optional(),
+    })
+    .strict(),
+});
+
 export const OptionalPostSchema = z.object({
   body: CreatePostSchema.shape.body.partial(),
 });

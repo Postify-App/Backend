@@ -5,7 +5,12 @@ import statusCodes from '../utils/statusCodes';
 import { APIResponse } from '../types/api.types';
 import businessService from './business.service';
 import postRepository from '../repositories/post.repository';
-import { CreatePostBody, PublishPostBody, TPost } from '../types/post.types';
+import {
+  CreatePostBody,
+  GetBusinessPostQuery,
+  PublishPostBody,
+  TPost,
+} from '../types/post.types';
 import APIError from '../utils/APIError';
 import cloudinaryService from './cloudinary.service';
 
@@ -104,8 +109,8 @@ class PostService {
     return res;
   }
 
-  async getBusinessPosts(businessId: string) {
-    const posts = await postRepository.getBusinessPosts(businessId);
+  async getBusinessPosts(id: string, status: GetBusinessPostQuery['status']) {
+    const posts = await postRepository.getBusinessPosts(id, status);
 
     const res: APIResponse = {
       status: 'success',
