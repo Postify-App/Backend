@@ -46,6 +46,8 @@ const envConfig = z
     CLOUDINARY_NAME: z.string(),
     CLOUDINARY_API_KEY: z.string(),
     CLOUDINARY_API_SECRET: z.string(),
+
+    MODEL_BASE_URL: z.string(),
   })
   .parse(process.env);
 
