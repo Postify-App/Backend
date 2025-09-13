@@ -37,11 +37,35 @@ export const initSockets = (server: HttpServer) => {
 
     // Client => Backend => Model
     socket.onAny((event, ...args) => {
+      logger.info('[Client => Model]', {
+        event,
+        socketId: socket.id,
+        argsCount: args.length,
+        args,
+        isTheModelConnected: modelSocket.connected,
+        timestamp: new Date().toDateString(),
+      });
+
+      if (!modelSocket.connected)
+        logger.error(`[Client => Model] Failed - Model disconnected`);
+
       modelSocket.emit(event, ...args);
     });
 
     // Model => Backend => Client
     modelSocket.onAny((event, ...args) => {
+      logger.info('[Model => Client]', {
+        event,
+        socketId: socket.id,
+        argsCount: args.length,
+        args,
+        isTheModelConnected: modelSocket.connected,
+        timestamp: new Date().toDateString(),
+      });
+
+      if (!modelSocket.connected)
+        logger.error(`[Model => Client] Failed - Model disconnected`);
+
       socket.emit(event, ...args);
     });
   });
