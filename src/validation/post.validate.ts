@@ -52,7 +52,3 @@ export const GetBusinessPostSchema = z.object({
     })
     .strict(),
 });
-
-export const OptionalPostSchema = z.object({
-  body: CreatePostSchema.shape.body.partial(),
-});

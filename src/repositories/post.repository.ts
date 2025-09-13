@@ -102,6 +102,17 @@ class PostRepository {
 
     return post;
   }
+
+  async deletePost(id: string) {
+    const post = await this.post.delete({
+      where: {
+        id,
+      },
+    });
+
+    if (!post)
+      throw new APIError('No post found with this id', statusCodes.NotFound);
+  }
 }
 
 export default new PostRepository();
