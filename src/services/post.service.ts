@@ -77,13 +77,14 @@ class PostService {
     // Delete from Redis
     await redisService.DEL(`${this.CACHE_KEY}:${businessId}`);
 
-    const postData = { ...data, ...cachedData };
-
     // Upload the file to cloud
+    console.log(data.file);
     if (data.file) {
       const { secure_url } = await cloudinaryService.uploadToCloud(data.file);
       data.file = secure_url;
     }
+
+    const postData = { ...data, ...cachedData };
 
     const post = await postRepository.createPost(postData as Post);
 
