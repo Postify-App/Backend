@@ -39,6 +39,7 @@ export const getBusinessPosts: RequestHandler<
 > = async (req, res, next) => {
   const result = await postService.getBusinessPosts(
     req.params.id,
+    (req.user as User).id,
     req.query.status
   );
   sendResponse(res, result);
@@ -57,5 +58,13 @@ export const updatePost: RequestHandler = async (req, res, next) => {
     (req.user as User).id
   );
 
+  sendResponse(res, result);
+};
+
+export const deletePost: RequestHandler<Id> = async (req, res, next) => {
+  const result = await postService.deletePost(
+    req.params.id,
+    (req.user as User).id
+  );
   sendResponse(res, result);
 };

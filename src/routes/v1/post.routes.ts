@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import {
   createPost,
+  deletePost,
   getBusinessPosts,
   getCurrentUserPosts,
   getPost,
@@ -13,7 +14,6 @@ import validate from '../../middlewares/validate';
 import {
   CreatePostSchema,
   GetBusinessPostSchema,
-  OptionalPostSchema,
   PublishPostSchema,
 } from '../../validation/post.validate';
 import { IdSchema } from '../../validation/api.validate';
@@ -40,6 +40,7 @@ router
   .route('/:id')
   .all(validate(IdSchema))
   .get(getPost)
-  .patch(validate(OptionalPostSchema), updatePost);
+  .patch(validate(PublishPostSchema), updatePost)
+  .delete(deletePost);
 
 export const postRoutes = router;

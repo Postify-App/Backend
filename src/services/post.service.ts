@@ -77,7 +77,7 @@ class PostService {
     // Delete from Redis
     await redisService.DEL(`${this.CACHE_KEY}:${businessId}`);
 
-    const post = { ...data, ...cachedData };
+    const postData = { ...data, ...cachedData };
 
     // Upload the file to cloud
     if (data.file) {
@@ -85,7 +85,7 @@ class PostService {
       data.file = secure_url;
     }
 
-    await postRepository.createPost(post as Post);
+    const post = await postRepository.createPost(postData as Post);
 
     const result: APIResponse = {
       status: 'success',
@@ -109,7 +109,13 @@ class PostService {
     return res;
   }
 
-  async getBusinessPosts(id: string, status: GetBusinessPostQuery['status']) {
+  async getBusinessPosts(
+    id: string,
+    userId: string,
+    status: GetBusinessPostQuery['status']
+  ) {
+    await businessService.checkIfBusinessUser(userId, id);
+
     const posts = await postRepository.getBusinessPosts(id, status);
 
     const res: APIResponse = {
@@ -135,7 +141,12 @@ class PostService {
   }
 
   async updatePost(data: Post, id: string, userId: string) {
-    await businessService.checkIfBusinessUser(userId, data.businessId);
+    await businessService.checkIfBusinessUser(
+      userId,
+      (
+        await postRepository.getPost(id)!
+      ).businessId
+    );
 
     const post = await postRepository.updatePost(data, id);
 
@@ -147,6 +158,24 @@ class PostService {
 
     return res;
   }
+
+  deletePost = async (id: string, userId: string) => {
+    await businessService.checkIfBusinessUser(
+      userId,
+      (
+        await postRepository.getPost(id)!
+      ).businessId
+    );
+
+    await postRepository.deletePost(id);
+
+    const result: APIResponse = {
+      status: 'success',
+      statusCode: statusCodes.OK,
+      message: 'Post deleted successfully',
+    };
+    return result;
+  };
 }
 
 export default new PostService();

@@ -10,11 +10,7 @@ process.on('uncaughtException', (err) => {
 });
 
 export const server = app.listen(env.PORT, () => {
-  logger.info(
-    `Server is running on port: ${env.PORT} ${new Date(
-      Date.now()
-    ).toISOString()}`
-  );
+  logger.info(`Server is running on port: ${env.PORT}`);
 });
 
 initSockets(server);
