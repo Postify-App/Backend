@@ -29,6 +29,7 @@ export const PublishPostSchema = z.object({
         .date({
           message: 'Scheduled date must be in valid date format',
         })
+        .default(new Date(Date.now()))
         .refine((date) => date >= new Date(Date.now()), {
           message: 'Scheduled date must be in the future',
         }),
