@@ -40,7 +40,9 @@ class PostService {
     const enhancedData = this.enhanceData(data, userId);
 
     // Save post to redis with ttl = 12 hours
-    redisService.setJSON(
+    await redisService.DEL(`${this.CACHE_KEY}:${enhancedData.businessId}`);
+
+    await redisService.setJSON(
       `${this.CACHE_KEY}:${enhancedData.businessId}`,
       enhancedData,
       this.CACHE_TTL
