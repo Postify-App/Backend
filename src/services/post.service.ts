@@ -13,6 +13,7 @@ import {
 } from '../types/post.types';
 import APIError from '../utils/APIError';
 import cloudinaryService from './cloudinary.service';
+import logger from '../config/logger';
 
 class PostService {
   private CACHE_TTL = 12;
@@ -59,8 +60,8 @@ class PostService {
     } catch (err) {
       logger.error('Error Creating post:', err);
 
-      if (error instanceof APIError) {
-        throw error;
+      if (err instanceof APIError) {
+        throw err;
       }
 
       throw new APIError(
