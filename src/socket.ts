@@ -63,6 +63,29 @@ export const initSockets = (server: HttpServer) => {
         timestamp: new Date().toDateString(),
       });
 
+      if (event === 'error') {
+        const errorData = args[0];
+        logger.error(`Model service error:`, errorData);
+
+        // Handling the painful Bad Gateway Error
+        if (errorData?.msg?.includes('502 Bad Gateway')) {
+          socket.emit('error', {
+            message:
+              'The publishing service is temporarily unavailable. Please try again in a few moments.',
+            code: 'PUBLISH_SERVICE_UNAVAILABLE',
+            originalError: errorData,
+          });
+        } else {
+          socket.emit('error', {
+            message: 'An error occurred in the model service',
+            code: 'MODEL_SERVICE_ERROR',
+            originalError: errorData,
+          });
+        }
+
+        return;
+      }
+
       if (!modelSocket.connected)
         logger.error(`[Model => Client] Failed - Model disconnected`);
 

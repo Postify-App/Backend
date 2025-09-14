@@ -35,26 +35,39 @@ class PostService {
   };
 
   createPost = async (data: CreatePostBody, userId: string) => {
-    await businessService.checkIfBusinessUser(userId, data.business_id);
+    try {
+      await businessService.checkIfBusinessUser(userId, data.business_id);
 
-    const enhancedData = this.enhanceData(data, userId);
+      const enhancedData = this.enhanceData(data, userId);
 
-    // Save post to redis with ttl = 12 hours
-    await redisService.DEL(`${this.CACHE_KEY}:${enhancedData.businessId}`);
+      // Save post to redis with ttl = 12 hours
+      await redisService.DEL(`${this.CACHE_KEY}:${enhancedData.businessId}`);
 
-    await redisService.setJSON(
-      `${this.CACHE_KEY}:${enhancedData.businessId}`,
-      enhancedData,
-      this.CACHE_TTL
-    );
+      await redisService.setJSON(
+        `${this.CACHE_KEY}:${enhancedData.businessId}`,
+        enhancedData,
+        this.CACHE_TTL
+      );
 
-    const res: APIResponse = {
-      status: 'success',
-      statusCode: statusCodes.Created,
-      message: 'Post created successfully',
-    };
+      const res: APIResponse = {
+        status: 'success',
+        statusCode: statusCodes.Created,
+        message: 'Post created successfully',
+      };
 
-    return res;
+      return res;
+    } catch (err) {
+      logger.error('Error Creating post:', err);
+
+      if (error instanceof APIError) {
+        throw error;
+      }
+
+      throw new APIError(
+        'Failed to create post. Please try again later.',
+        statusCodes.InternalServerError
+      );
+    }
   };
 
   publishPost = async (
