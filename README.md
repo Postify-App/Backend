@@ -1,6 +1,6 @@
 # Postify
 
-**Postify** is an AI marketing agency platform. It empowers marketing agencies and freelancers to streamline their content creation workflows — enabling them to generate, schedule, and manage social media campaigns with AI assistance, real-time collaboration, insights analysis, and automated publishing across multiple platforms.
+**Postify** is an AI marketing agency platform. It empowers marketing agencies and freelancers to streamline their content creation workflows enabling them to generate, schedule, and manage social media campaigns with AI assistance, real time collaboration, insights analysis, and automated publishing across multiple platforms.
 
 ## Tech Stack
 
